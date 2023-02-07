@@ -1,27 +1,29 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TestCard {
-
 
     public static void main(String[] args) {
 
         boolean moreInput = true;
         Scanner sc = new Scanner(System.in);
         String outputString;
-        int runningCount = 0;
-        //String inputCollection = "";
 
         while (moreInput) {
+            int cardNumber = 0;
+            int runningCount = 0;
+
             System.out.println("Please enter a number of cards in the format like: 5S TC AH JD");
+            String tempString = sc.nextLine();
+            System.out.print(tempString);
 
-            while (sc.hasNext()) {
-                int cardNumber = 0;
+            ArrayList<String> givenCards = new ArrayList<String>(Arrays.asList(tempString.split(" ")));
 
-                String tempString = sc.next();
-                System.out.print(tempString + " ");
-
-                cardNumber += determineCardRank(tempString.charAt(0));
-                switch (tempString.charAt(1)) {
+            for(int i = 0; i < givenCards.size(); i++){
+                cardNumber = 0;
+                cardNumber += determineCardRank(givenCards.get(i).charAt(0));
+                switch (givenCards.get(i).charAt(1)) {
                     case 'C':
                         break;
                     case 'D':
@@ -34,13 +36,19 @@ public class TestCard {
                         cardNumber += 39;
                         break;
                 }
-
                 Card newCard = Card.getCard(cardNumber);
                 runningCount += newCard.getCribCount();
-
             }
             System.out.println(": total count " + runningCount + ".");
+            System.out.println("do you want to try again? If no, type 'N', otherwise hit enter.");
+            String check = sc.nextLine();
+            if(check.equals("n") || check.equals("N")){
+                moreInput = false;
+                System.out.println("Thank you, goodbye.");
+
+            }
         }
+
     }
 
     public static int determineCardRank(char i) {
